@@ -194,36 +194,3 @@ def format_search_results_markdown(
         )
 
     return "\n".join(lines)
-
-
-def build_search_payload(
-    keyword: str | None,
-    opp_num: str | None,
-    agencies: list[str] | None,
-    opp_statuses: list[str] | None,
-    eligibilities: list[str] | None,
-    funding_categories: list[str] | None,
-    aln: str | None,
-    rows: int,
-    start_record: int,
-) -> dict[str, Any]:
-    """Build the JSON payload for a search2 POST request."""
-    payload: dict[str, Any] = {
-        "rows": rows,
-        "startRecord": start_record,
-    }
-    if keyword:
-        payload["keyword"] = keyword
-    if opp_num:
-        payload["oppNum"] = opp_num
-    if agencies:
-        payload["agencies"] = "|".join(agencies)
-    if opp_statuses:
-        payload["oppStatuses"] = "|".join(opp_statuses)
-    if eligibilities:
-        payload["eligibilities"] = "|".join(eligibilities)
-    if funding_categories:
-        payload["fundingCategories"] = "|".join(funding_categories)
-    if aln:
-        payload["aln"] = aln
-    return payload

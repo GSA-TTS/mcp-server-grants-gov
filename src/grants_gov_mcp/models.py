@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Optional, List
+from typing import Any, Optional, List
 
 from pydantic import BaseModel, Field, ConfigDict
 
@@ -102,3 +102,25 @@ class SearchGrantsInput(BaseModel):
         default=ResponseFormat.MARKDOWN,
         description="Output format: 'markdown' for human-readable or 'json' for machine-readable structured data.",
     )
+
+    def to_payload(self) -> dict[str, Any]:
+        """Build the JSON payload for a search2 POST request."""
+        payload: dict[str, Any] = {
+            "rows": self.rows,
+            "startRecord": self.start_record,
+        }
+        if self.keyword:
+            payload["keyword"] = self.keyword
+        if self.opp_num:
+            payload["oppNum"] = self.opp_num
+        if self.agencies:
+            payload["agencies"] = "|".join(self.agencies)
+        if self.opp_statuses:
+            payload["oppStatuses"] = "|".join(s.value for s in self.opp_statuses)
+        if self.eligibilities:
+            payload["eligibilities"] = "|".join(self.eligibilities)
+        if self.funding_categories:
+            payload["fundingCategories"] = "|".join(self.funding_categories)
+        if self.aln:
+            payload["aln"] = self.aln
+        return payload

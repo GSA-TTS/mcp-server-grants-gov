@@ -5,7 +5,6 @@ from fastmcp import FastMCP
 
 from .models import FetchOpportunityInput, ResponseFormat, SearchGrantsInput
 from .utils import (
-    build_search_payload,
     format_opportunity_detail_markdown,
     format_search_results_markdown,
     handle_api_error,
@@ -100,21 +99,7 @@ def register_tools(mcp: FastMCP) -> None:
             - Returns "Error: Request timed out..." on slow responses
         """
         try:
-            payload = build_search_payload(
-                keyword=params.keyword,
-                opp_num=params.opp_num,
-                agencies=[a.value if hasattr(a, "value") else a for a in params.agencies]
-                if params.agencies
-                else None,
-                opp_statuses=[s.value for s in params.opp_statuses]
-                if params.opp_statuses
-                else None,
-                eligibilities=params.eligibilities,
-                funding_categories=params.funding_categories,
-                aln=params.aln,
-                rows=params.rows,
-                start_record=params.start_record,
-            )
+            payload = params.to_payload()
 
             response = await make_search2_request(payload)
 
