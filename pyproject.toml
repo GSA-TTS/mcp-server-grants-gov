@@ -13,9 +13,6 @@ dependencies = [
     "wheel>=0.46.3",
 ]
 
-[project.scripts]
-grants-gov-mcp = "grants_gov_mcp.app:main"
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
